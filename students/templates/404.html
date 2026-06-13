@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - 404{% endblock %}
+
+{% block content %}
+    <div class="error-container">
+        <div class="error-code">404</div>
+        
+        <h2 class="error-message">Page Not Found</h2>
+        
+        <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem;">
+            Sorry, the page you're looking for doesn't exist or has been moved.
+        </p>
+        
+        <div class="info-box">
+            <p style="margin: 0; margin-bottom: 1.5rem; color: #555;">
+                Here are some helpful links:
+            </p>
+            <ul style="list-style: none; margin: 0; text-align: center;">
+                <li style="margin: 0.8rem 0;">
+                    <a href="{% url 'home' %}" class="btn btn-primary">← Back to Home</a>
+                </li>
+                <li style="margin: 0.8rem 0;">
+                    <a href="{% url 'student_list' %}" class="btn btn-primary">📚 View Students</a>
+                </li>
+                <li style="margin: 0.8rem 0;">
+                    <a href="{% url 'contact' %}" class="btn btn-primary">📧 Contact Us</a>
+                </li>
+            </ul>
+        </div>
+        
+        <p style="color: #999; font-size: 0.9rem; margin-top: 2rem;">
+            Error Code: 404 Not Found
+        </p>
+    </div>
+{% endblock %}

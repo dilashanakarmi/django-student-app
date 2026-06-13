@@ -1,40 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Students List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-            line-height: 1.6;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to Students App!</h1>
-        <p>This is your first Django template.</p>
-        <p>You can see this page because:</p>
-        <ul>
-            <li>We created a view in views.py</li>
-            <li>We connected it to a URL in urls.py</li>
-            <li>We created this HTML template</li>
-        </ul>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Students - Django Students App{% endblock %}
+
+{% block content %}
+    <h1>📚 Students List</h1>
+    
+    <p>Total Students: <strong>{{ total_students }}</strong></p>
+    
+    {% if students %}
+        <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+            <thead>
+                <tr style="background-color: #34495e; color: white;">
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Name</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Email</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Phone</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">GPA</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Status</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr style="background-color: {% cycle 'white' '#f9f9f9' %}; border: 1px solid #ddd;">
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <strong>{{ student.get_full_name|title }}</strong>
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">{{ student.email|lower }}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">{{ student.phone }}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <strong>{{ student.gpa }}</strong>
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            {% if student.is_active %}
+                                <span style="background-color: #27ae60; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem;">
+                                    Active
+                                </span>
+                            {% else %}
+                                <span style="background-color: #e74c3c; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem;">
+                                    Inactive
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <a href="{% url 'students_detail' student.id %}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="warning-box">
+            <p>No students found. <a href="{% url 'home' %}">Go back home</a></p>
+        </div>
+    {% endif %}
+{% endblock %}

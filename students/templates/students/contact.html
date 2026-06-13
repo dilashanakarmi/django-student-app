@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Django Students App{% endblock %}
+
+{% block content %}
+    <h1>Contact Us 📧</h1>
+    
+    <p>Have questions or feedback? We'd love to hear from you!</p>
+    
+    <div class="grid-2">
+        <!-- Contact Information -->
+        <div class="info-box">
+            <h2>Get in Touch</h2>
+            <p><strong>Email:</strong> <a href="mailto:info@studentsapp.com">info@studentsapp.com</a></p>
+            <p><strong>Phone:</strong> +977-1-234-5678</p>
+            <p><strong>Location:</strong> Pokhara, Nepal</p>
+            <p><strong>Hours:</strong> Monday - Friday, 9 AM - 5 PM</p>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="success-box">
+            <h2>Quick Links</h2>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'students_list' %}">Students</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="warning-box">
+        <h3>📝 Contact Form</h3>
+        <p>A contact form feature is coming soon! For now, please use the email address above.</p>
+    </div>
+{% endblock %}

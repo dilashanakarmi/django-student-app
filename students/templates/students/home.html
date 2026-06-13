@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Django Students App{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Students App! 🎓</h1>
+    
+    <p>This is the home page of our college management system.</p>
+    
+    <div class="info-box">
+        <h2>Quick Links</h2>
+        <ul>
+            <li><a href="{% url 'students_list' %}">View All Students</a></li>
+            <li><a href="{% url 'about' %}">Learn About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+        </ul>
+    </div>
+    
+    <h2>Features</h2>
+    <ul>
+        <li>Manage student records</li>
+        <li>Track student progress</li>
+        <li>Professional dashboard</li>
+    </ul>
+{% endblock %}

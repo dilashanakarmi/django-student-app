@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.get_full_name }} - Students App{% endblock %}
+
+{% block content %}
+    <a href="{% url 'students_list' %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Students
+    </a>
+    
+    <h1>{{ student.get_full_name|title }}</h1>
+    
+    <div class="grid-2" style="margin: 2rem 0;">
+        <!-- Student Info -->
+        <div class="info-box">
+            <h2>Personal Information</h2>
+            <p>
+                <strong>Name:</strong> {{ student.get_full_name|title }}<br>
+                <strong>Email:</strong> <a href="mailto:{{ student.email }}">{{ student.email|lower }}</a><br>
+                <strong>Phone:</strong> {{ student.phone }}<br>
+                <strong>Enrolled:</strong> {{ student.enrollment_date|date:"M d, Y" }}
+            </p>
+        </div>
+        
+        <!-- Academic Info -->
+        <div class="success-box">
+            <h2>Academic Information</h2>
+            <p>
+                <strong>GPA:</strong> 
+                {% if student.gpa >= 3.8 %}
+                    <span style="color: #27ae60; font-weight: bold;">{{ student.gpa }} (Excellent)</span>
+                {% elif student.gpa >= 3.5 %}
+                    <span style="color: #2980b9; font-weight: bold;">{{ student.gpa }} (Very Good)</span>
+                {% elif student.gpa >= 3.0 %}
+                    <span style="color: #f39c12; font-weight: bold;">{{ student.gpa }} (Good)</span>
+                {% else %}
+                    <span style="color: #e74c3c; font-weight: bold;">{{ student.gpa }} (Needs Improvement)</span>
+                {% endif %}
+                <br>
+                <strong>Status:</strong> 
+                {% if student.is_active %}
+                    <span style="color: #27ae60;">🟢 Active</span>
+                {% else %}
+                    <span style="color: #e74c3c;">🔴 Inactive</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    
+    <!-- Bio Section -->
+    {% if student.bio %}
+        <div class="info-box">
+            <h2>About</h2>
+            <p>{{ student.bio|truncatechars:200 }}</p>
+        </div>
+    {% endif %}
+    
+    <!-- Actions -->
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'students_list' %}" class="btn btn-primary">Back to Students</a>
+    </div>
+{% endblock %}

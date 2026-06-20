@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+    <a href="{% url 'library:book_list' %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Books
+    </a>
+    
+    <h1>{{ book.title|title }}</h1>
+    
+    <div class="info-box" style="margin: 2rem 0;">
+        <h2>Book Information</h2>
+        <p>
+            <strong>Author:</strong> {{ book.author }}<br>
+            <strong>ISBN:</strong> {{ book.isbn }}<br>
+            <strong>Published:</strong> {{ book.publication_date|date:"M d, Y" }}<br>
+            <strong>Total Copies:</strong> {{ book.total_copies }}<br>
+            <strong>Available Copies:</strong> 
+            {% if book.available_copies > 0 %}
+                <span style="color: #27ae60; font-weight: bold;">{{ book.available_copies }}</span>
+              <a href="{% url 'library:book_borrow_history' book.id %}" style="color: #3498db; display: inline-block; margin-top: 1rem;">
+    📖 View Borrow History
+</a>  
+            {% else %}
+                <span style="color: #e74c3c; font-weight: bold;">Not Available</span>
+            {% endif %}
+        </p>
+    </div>
+    
+    {% if book.description %}
+        <div class="success-box">
+            <h2>Description</h2>
+            <p>{{ book.description }}</p>
+        </div>
+    {% endif %}
+    
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'library:book_update' book.id %}" class="btn btn-primary" style="background-color: #f39c12;">
+            ✏️ Edit Book
+        </a>
+        <a href="{% url 'library:book_delete' book.id %}" class="btn btn-primary" style="background-color: #e74c3c;">
+            🗑️ Delete Book
+        </a>
+        <a href="{% url 'library:book_list' %}" class="btn btn-primary">
+            📚 Back to Books
+        </a>
+    </div>
+{% endblock %}

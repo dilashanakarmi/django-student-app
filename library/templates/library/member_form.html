@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Register{% endif %} Member{% endblock %}
+
+{% block content %}
+    <a href="{% url 'library:member_list' %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Members
+    </a>
+    
+    <h1>{% if form.instance.pk %}Edit Member{% else %}Register New Member{% endif %}</h1>
+    
+    <form method="post" style="max-width: 600px; margin: 2rem 0;">
+        {% csrf_token %}
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}<div style="color: #e74c3c;">{{ form.first_name.errors }}</div>{% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}<div style="color: #e74c3c;">{{ form.last_name.errors }}</div>{% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.email.label }}</label>
+            {{ form.email }}
+            {% if form.email.errors %}<div style="color: #e74c3c;">{{ form.email.errors }}</div>{% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.phone.label }}</label>
+            {{ form.phone }}
+            {% if form.phone.errors %}<div style="color: #e74c3c;">{{ form.phone.errors }}</div>{% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.membership_id.label }}</label>
+            {{ form.membership_id }}
+            {% if form.membership_id.errors %}<div style="color: #e74c3c;">{{ form.membership_id.errors }}</div>{% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.status.label }}</label>
+            {{ form.status }}
+            {% if form.status.errors %}<div style="color: #e74c3c;">{{ form.status.errors }}</div>{% endif %}
+        </div>
+        
+        <div style="margin: 2rem 0;">
+            <button type="submit" class="btn btn-primary" style="background-color: #27ae60; padding: 0.8rem 2rem;">
+                {% if form.instance.pk %}💾 Update Member{% else %}➕ Register Member{% endif %}
+            </button>
+            <a href="{% url 'library:member_list' %}" class="btn btn-primary" style="padding: 0.8rem 2rem;">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

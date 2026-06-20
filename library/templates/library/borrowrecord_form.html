@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{% if form.instance.pk %}Update{% else %}Create{% endif %} Borrow Record{% endblock %}
+
+{% block content %}
+    <a href="{% url 'library:borrowrecord_list' %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Records
+    </a>
+    
+    <h1>{% if form.instance.pk %}Update Record{% else %}Create Borrow Record{% endif %}</h1>
+    
+    <form method="post" style="max-width: 600px; margin: 2rem 0;">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div style="margin: 1.5rem 0;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<small style="color: #666;">{{ field.help_text|safe }}</small>{% endif %}
+                {% if field.errors %}<div style="color: #e74c3c; margin-top: 0.5rem;">{{ field.errors }}</div>{% endif %}
+            </div>
+        {% endfor %}
+        
+        <div style="margin: 2rem 0;">
+            <button type="submit" class="btn btn-primary" style="background-color: #27ae60; padding: 0.8rem 2rem;">
+                {% if form.instance.pk %}💾 Update Record{% else %}➕ Create Record{% endif %}
+            </button>
+            <a href="{% url 'library:borrowrecord_list' %}" class="btn btn-primary" style="padding: 0.8rem 2rem;">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

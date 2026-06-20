@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Borrow Record{% endblock %}
+
+{% block content %}
+    <a href="{% url 'library:borrowrecord_list' %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Records
+    </a>
+    
+    <h1>📖 Borrow Record</h1>
+    
+    <div class="info-box" style="margin: 2rem 0;">
+        <h2>Record Details</h2>
+        <p>
+            <strong>Member:</strong> <a href="{% url 'library:member_detail' record.member.id %}">{{ record.member.get_full_name|title }}</a><br>
+            <strong>Book:</strong> <a href="{% url 'library:book_detail' record.book.id %}">{{ record.book.title|title }}</a><br>
+            <strong>Checkout Date:</strong> {{ record.checkout_date|date:"M d, Y H:i" }}<br>
+            <strong>Due Date:</strong> {{ record.due_date|date:"M d, Y" }}<br>
+            {% if record.return_date %}
+                <strong>Return Date:</strong> {{ record.return_date|date:"M d, Y" }}<br>
+            {% endif %}
+            <strong>Status:</strong> 
+            {% if record.is_returned %}
+                <span style="color: #27ae60; font-weight: bold;">✓ Returned</span>
+            {% else %}
+                <span style="color: #f39c12; font-weight: bold;">📦 Borrowed</span>
+            {% endif %}
+        </p>
+    </div>
+    
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'library:borrowrecord_update' record.id %}" class="btn btn-primary" style="background-color: #f39c12;">
+            ✏️ Update Record
+        </a>
+        <a href="{% url 'library:borrowrecord_delete' record.id %}" class="btn btn-primary" style="background-color: #e74c3c;">
+            🗑️ Delete Record
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Add{% endif %} Book{% endblock %}
+
+{% block content %}
+    <a href="{% url 'library:book_list' %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Books
+    </a>
+    
+    <h1>{% if form.instance.pk %}Edit Book{% else %}Add New Book{% endif %}</h1>
+    
+    <form method="post" style="max-width: 600px; margin: 2rem 0;">
+        {% csrf_token %}
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div style="color: #e74c3c; margin-top: 0.5rem;">{{ form.title.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.author.label }}</label>
+            {{ form.author }}
+            {% if form.author.errors %}
+                <div style="color: #e74c3c; margin-top: 0.5rem;">{{ form.author.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.isbn.label }}</label>
+            {{ form.isbn }}
+            {% if form.isbn.errors %}
+                <div style="color: #e74c3c; margin-top: 0.5rem;">{{ form.isbn.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.publication_date.label }}</label>
+            {{ form.publication_date }}
+            <small style="color: #666;">{{ form.publication_date.help_text }}</small>
+            {% if form.publication_date.errors %}
+                <div style="color: #e74c3c; margin-top: 0.5rem;">{{ form.publication_date.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.total_copies.label }}</label>
+            {{ form.total_copies }}
+            {% if form.total_copies.errors %}
+                <div style="color: #e74c3c; margin-top: 0.5rem;">{{ form.total_copies.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.available_copies.label }}</label>
+            {{ form.available_copies }}
+            {% if form.available_copies.errors %}
+                <div style="color: #e74c3c; margin-top: 0.5rem;">{{ form.available_copies.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div style="color: #e74c3c; margin-top: 0.5rem;">{{ form.description.errors }}</div>
+            {% endif %}
+        </div>
+        
+        {% if form.non_field_errors %}
+            <div class="error-box">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+        <div style="margin: 2rem 0;">
+            <button type="submit" class="btn btn-primary" style="background-color: #27ae60; padding: 0.8rem 2rem; font-size: 1rem;">
+                {% if form.instance.pk %}💾 Update Book{% else %}➕ Create Book{% endif %}
+            </button>
+            <a href="{% url 'library:book_list' %}" class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem;">
+                Cancel
+            </a>
+        </div>
+    </form>
+{% endblock %}

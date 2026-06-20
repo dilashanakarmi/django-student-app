@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+    <h1>🔍 Search Results</h1>
+    
+    <div class="info-box" style="margin: 2rem 0;">
+        <h2>Search</h2>
+        <form method="get" style="display: flex; gap: 1rem;">
+            {% if search_type == 'Books' %}
+                <input type="text" name="q" value="{{ query }}" placeholder="Search books by title or author..." 
+                       style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+                <button type="submit" class="btn btn-primary">Search Books</button>
+                <a href="{% url 'library:search_members' %}" class="btn btn-primary" style="background-color: #f39c12;">
+                    Search Members
+                </a>
+            {% else %}
+                <input type="text" name="q" value="{{ query }}" placeholder="Search members by name or email..." 
+                       style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+                <button type="submit" class="btn btn-primary">Search Members</button>
+                <a href="{% url 'library:search_books' %}" class="btn btn-primary" style="background-color: #f39c12;">
+                    Search Books
+                </a>
+            {% endif %}
+        </form>
+    </div>
+    
+    {% if query %}
+        <p style="font-size: 1.1rem; margin: 2rem 0;">
+            <strong>Results for "{{ query }}":</strong> 
+            {% if search_type == 'Books' %}
+                {{ books|length }} book(s) found
+            {% else %}
+                {{ members|length }} member(s) found
+            {% endif %}
+        </p>
+    {% endif %}
+    
+    {% if search_type == 'Books' %}
+        {% if books %}
+            <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+                <thead>
+                    <tr style="background-color: #34495e; color: white;">
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Title</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Author</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">ISBN</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Available</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <tr style="background-color: {% cycle 'white' '#f9f9f9' %}; border: 1px solid #ddd;">
+                            <td style="padding: 1rem; border: 1px solid #ddd;">
+                                <strong>{{ book.title|title }}</strong>
+                            </td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">{{ book.author }}</td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">{{ book.isbn }}</td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">{{ book.available_copies }}</td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">
+                                <a href="{% url 'library:book_detail' book.id %}" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">View</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% elif query %}
+            <div class="warning-box">
+                <p>No books found matching "{{ query }}". Try a different search term.</p>
+            </div>
+        {% else %}
+            <div class="info-box">
+                <p>Enter a book title or author name to search.</p>
+            </div>
+        {% endif %}
+    
+    {% else %}
+        {% if members %}
+            <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+                <thead>
+                    <tr style="background-color: #34495e; color: white;">
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Name</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Membership ID</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Email</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Status</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                        <tr style="background-color: {% cycle 'white' '#f9f9f9' %}; border: 1px solid #ddd;">
+                            <td style="padding: 1rem; border: 1px solid #ddd;">
+                                <strong>{{ member.get_full_name|title }}</strong>
+                            </td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">{{ member.membership_id }}</td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">{{ member.email|lower }}</td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">
+                                {% if member.status == 'active' %}
+                                    <span style="background-color: #27ae60; color: white; padding: 0.3rem 0.8rem; border-radius: 20px;">Active</span>
+                                {% else %}
+                                    <span style="background-color: #f39c12; color: white; padding: 0.3rem 0.8rem; border-radius: 20px;">{{ member.status|title }}</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem; border: 1px solid #ddd;">
+                                <a href="{% url 'library:member_detail' member.id %}" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">View</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% elif query %}
+            <div class="warning-box">
+                <p>No members found matching "{{ query }}". Try a different search term.</p>
+            </div>
+        {% else %}
+            <div class="info-box">
+                <p>Enter a member name or email to search.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

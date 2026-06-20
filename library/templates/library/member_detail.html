@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ member.get_full_name }}{% endblock %}
+
+{% block content %}
+    <a href="{% url 'library:member_list' %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Members
+    </a>
+    
+    <h1>{{ member.get_full_name|title }}</h1>
+    
+    <div class="info-box" style="margin: 2rem 0;">
+        <h2>Member Information</h2>
+        <p>
+            <strong>Membership ID:</strong> {{ member.membership_id }}<br>
+            <strong>Email:</strong> <a href="mailto:{{ member.email }}">{{ member.email|lower }}</a><br>
+            <strong>Phone:</strong> {{ member.phone }}<br>
+            <strong>Joined:</strong> {{ member.join_date|date:"M d, Y" }}<br>
+            <strong>Status:</strong> 
+            {% if member.status == 'active' %}
+                <span style="color: #27ae60; font-weight: bold;">🟢 Active</span>
+            {% elif member.status == 'inactive' %}
+                <span style="color: #f39c12; font-weight: bold;">🟡 Inactive</span>
+            {% else %}
+                <span style="color: #e74c3c; font-weight: bold;">🔴 Suspended</span>
+            {% endif %}
+            <a href="{% url 'library:member_borrow_history' member.id %}" style="color: #3498db; display: inline-block; margin-top: 1rem;">
+    📚 View Borrow History
+</a>
+        </p>
+    </div>
+    
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'library:member_update' member.id %}" class="btn btn-primary" style="background-color: #f39c12;">
+            ✏️ Edit Member
+        </a>
+        <a href="{% url 'library:member_delete' member.id %}" class="btn btn-primary" style="background-color: #e74c3c;">
+            🗑️ Delete Member
+        </a>
+    </div>
+{% endblock %}

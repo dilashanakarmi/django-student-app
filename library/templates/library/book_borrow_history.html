@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }}'s Borrow History{% endblock %}
+
+{% block content %}
+    <a href="{% url 'library:book_detail' book.id %}" style="color: #3498db; margin-bottom: 1rem; display: inline-block;">
+        ← Back to Book
+    </a>
+    
+    <h1>{{ book.title|title }} - Borrow History</h1>
+    
+    <div class="info-box" style="margin: 2rem 0;">
+        <p>
+            <strong>Author:</strong> {{ book.author }}<br>
+            <strong>ISBN:</strong> {{ book.isbn }}<br>
+            <strong>Total Copies:</strong> {{ book.total_copies }}<br>
+            <strong>Available:</strong> {{ book.available_copies }}
+        </p>
+    </div>
+    
+    {% if borrow_records %}
+        <h2>Borrowed By ({{ borrow_records|length }} records)</h2>
+        
+        <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+            <thead>
+                <tr style="background-color: #34495e; color: white;">
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Member Name</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Membership ID</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Checkout Date</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Due Date</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Status</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in borrow_records %}
+                    <tr style="background-color: {% cycle 'white' '#f9f9f9' %}; border: 1px solid #ddd;">
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <a href="{% url 'library:member_detail' record.member.id %}" style="color: #3498db;">
+                                {{ record.member.get_full_name|title }}
+                            </a>
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">{{ record.member.membership_id }}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">{{ record.checkout_date|date:"M d, Y" }}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">{{ record.due_date|date:"M d, Y" }}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            {% if record.is_returned %}
+                                <span style="background-color: #27ae60; color: white; padding: 0.3rem 0.8rem; border-radius: 20px;">✓ Returned</span>
+                            {% else %}
+                                <span style="background-color: #f39c12; color: white; padding: 0.3rem 0.8rem; border-radius: 20px;">📦 Borrowed</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <a href="{% url 'library:borrowrecord_detail' record.id %}" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="warning-box">
+            <p>This book hasn't been borrowed yet.</p>
+        </div>
+    {% endif %}
+{% endblock %}
